@@ -1,10 +1,13 @@
+import org.testng.annotations.Test;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class main {
+public class writeInFile {
 
-    public static void main(String[] args) {
+    @Test
+    public static void writeInFile(){
         try {
             File file = new File("C:\\Users\\DELL\\Documents\\test1.txt");
             FileWriter fileWriter = new FileWriter(file);

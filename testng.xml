@@ -3,7 +3,7 @@
 <suite name="Suite1" verbose="1" >
     <test name="writeInFile" >
         <classes>
-            <class name="main" />
+            <class name="writeInFile" />
         </classes>
     </test>
 </suite>
