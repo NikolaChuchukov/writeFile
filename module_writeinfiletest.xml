@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_writeinfiletest" default="compile.module.writeinfiletest">
+  <dirname property="module.writeinfiletest.basedir" file="${ant.file.module_writeinfiletest}"/>
+  
+  <property name="module.jdk.home.writeinfiletest" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.writeinfiletest" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.writeinfiletest" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.writeinfiletest" value="-encoding UTF-8 -source 1.5 -target 1.5 ${compiler.args}"/>
+  
+  <property name="writeinfiletest.output.dir" value="${module.writeinfiletest.basedir}/target/classes"/>
+  <property name="writeinfiletest.testoutput.dir" value="${module.writeinfiletest.basedir}/target/test-classes"/>
+  
+  <path id="writeinfiletest.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="writeinfiletest.module.production.classpath">
+    <path refid="${module.jdk.classpath.writeinfiletest}"/>
+  </path>
+  
+  <path id="writeinfiletest.runtime.production.module.classpath">
+    <pathelement location="${writeinfiletest.output.dir}"/>
+  </path>
+  
+  <path id="writeinfiletest.module.classpath">
+    <path refid="${module.jdk.classpath.writeinfiletest}"/>
+    <pathelement location="${writeinfiletest.output.dir}"/>
+  </path>
+  
+  <path id="writeinfiletest.runtime.module.classpath">
+    <pathelement location="${writeinfiletest.testoutput.dir}"/>
+    <pathelement location="${writeinfiletest.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.writeinfiletest">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.writeinfiletest">
+    <patternset refid="excluded.from.module.writeinfiletest"/>
+  </patternset>
+  
+  <path id="writeinfiletest.module.sourcepath">
+    <dirset dir="${module.writeinfiletest.basedir}">
+      <include name="src/main/java"/>
+      <include name="src/main/resources"/>
+    </dirset>
+  </path>
+  
+  <path id="writeinfiletest.module.test.sourcepath">
+    <dirset dir="${module.writeinfiletest.basedir}">
+      <include name="src/test/java"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.writeinfiletest" depends="compile.module.writeinfiletest.production,compile.module.writeinfiletest.tests" description="Compile module writeInFileTest"/>
+  
+  <target name="compile.module.writeinfiletest.production" depends="register.custom.compilers" description="Compile module writeInFileTest; production classes">
+    <mkdir dir="${writeinfiletest.output.dir}"/>
+    <javac2 destdir="${writeinfiletest.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.writeinfiletest}/javac">
+      <compilerarg line="${compiler.args.writeinfiletest}"/>
+      <bootclasspath refid="writeinfiletest.module.bootclasspath"/>
+      <classpath refid="writeinfiletest.module.production.classpath"/>
+      <src refid="writeinfiletest.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.writeinfiletest"/>
+    </javac2>
+    
+    <copy todir="${writeinfiletest.output.dir}">
+      <fileset dir="${module.writeinfiletest.basedir}/src/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.writeinfiletest.basedir}/src/main/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.writeinfiletest.tests" depends="register.custom.compilers,compile.module.writeinfiletest.production" description="compile module writeInFileTest; test classes" unless="skip.tests">
+    <mkdir dir="${writeinfiletest.testoutput.dir}"/>
+    <javac2 destdir="${writeinfiletest.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.writeinfiletest}/javac">
+      <compilerarg line="${compiler.args.writeinfiletest}"/>
+      <bootclasspath refid="writeinfiletest.module.bootclasspath"/>
+      <classpath refid="writeinfiletest.module.classpath"/>
+      <src refid="writeinfiletest.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.writeinfiletest"/>
+    </javac2>
+    
+    <copy todir="${writeinfiletest.testoutput.dir}">
+      <fileset dir="${module.writeinfiletest.basedir}/src/test/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.writeinfiletest" description="cleanup module">
+    <delete dir="${writeinfiletest.output.dir}"/>
+    <delete dir="${writeinfiletest.testoutput.dir}"/>
+  </target>
+</project>
